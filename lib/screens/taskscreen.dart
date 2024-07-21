@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:todoey/Widgets/tasklist.dart';
+import 'package:todoey/models/tasks.dart';
 import 'package:todoey/screens/addtasksscreen.dart';
 
-class Taskscreen extends StatelessWidget {
+class Taskscreen extends StatefulWidget {
   const Taskscreen({super.key});
 
+  @override
+  State<Taskscreen> createState() => _TaskscreenState();
+}
+
+class _TaskscreenState extends State<Taskscreen> {
+  List<Task> tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +27,18 @@ class Taskscreen extends StatelessWidget {
           child: Icon(Icons.add),
           onPressed: () {
             //add new task
-           //for full screen
-           // showModalBottomSheet(context: context, isScrollControlled: true, builder:(context)=>Addtasksscreen());
-showModalBottomSheet(context: context,  builder:(context)=>Addtasksscreen());
-
+            //for full screen
+            // showModalBottomSheet(context: context, isScrollControlled: true, builder:(context)=>Addtasksscreen());
+            showModalBottomSheet(
+                context: context,
+                builder: (context) => Addtasksscreen(addtaskscallback: (newTextTittle) {
+                     print(newTextTittle);
+                     setState(() {
+                       tasks.add(Task(name: newTextTittle));
+                     });
+                     Navigator.pop(context);
+             
+          },),);
           },
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -40,7 +59,7 @@ showModalBottomSheet(context: context,  builder:(context)=>Addtasksscreen());
                         color: Colors.white,
                         fontSize: 50.0,
                         fontWeight: FontWeight.w700)),
-                Text("12 Tasks",
+                Text("${tasks.length}Tasks",
                     style: TextStyle(color: Colors.white, fontSize: 18.0)),
               ],
             ),
@@ -53,11 +72,8 @@ showModalBottomSheet(context: context,  builder:(context)=>Addtasksscreen());
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0))),
-                child: TasksList()),
+                child: TasksList(tasks: tasks)),
           )
         ]));
   }
 }
-
-
-
