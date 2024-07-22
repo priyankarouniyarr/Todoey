@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:todoey/models/tasks.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/tasks_data.dart';
 
 class Addtasksscreen extends StatelessWidget {
-String ? newTextTittle;
-final Function(String?) ?addtaskscallback;
-Addtasksscreen({ this.addtaskscallback});
   @override
-  
   Widget build(BuildContext context) {
+    String? newTextTittle;
     return Container(
       color: Color(0xff757575),
       child: Container(
@@ -30,17 +30,20 @@ Addtasksscreen({ this.addtaskscallback});
                 TextField(
                   autofocus: true,
                   textAlign: TextAlign.center,
-                  onChanged: (newText){
-                  newTextTittle = newText;
-                  },),
+                  onChanged: (newText) {
+                    newTextTittle = newText;
+                    //   print(newTextTittle);
+                  },
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
                 MaterialButton(
                     onPressed: () {
-                      //add our text
                      // print(newTextTittle);
-                     addtaskscallback!(newTextTittle);
+                      Provider.of<TasksData>(context, listen: false).addTask(newTextTittle!);
+                    //  print(newTextTittle);
+                      Navigator.pop(context);
                     },
                     child: Text("Add", style: TextStyle(color: Colors.white)),
                     color: Colors.lightBlueAccent)

@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:todoey/Widgets/tasklist.dart';
-import 'package:todoey/models/tasks.dart';
 import 'package:todoey/screens/addtasksscreen.dart';
-
-class Taskscreen extends StatefulWidget {
+import 'package:provider/provider.dart';
+import 'package:todoey/models/tasks_data.dart';
+class Taskscreen extends StatelessWidget {
   const Taskscreen({super.key});
-
-  @override
-  State<Taskscreen> createState() => _TaskscreenState();
-}
-
-class _TaskscreenState extends State<Taskscreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bread'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +20,15 @@ class _TaskscreenState extends State<Taskscreen> {
             // showModalBottomSheet(context: context, isScrollControlled: true, builder:(context)=>Addtasksscreen());
             showModalBottomSheet(
                 context: context,
-                builder: (context) => Addtasksscreen(addtaskscallback: (newTextTittle) {
-                     print(newTextTittle);
-                     setState(() {
-                       tasks.add(Task(name: newTextTittle));
-                     });
-                     Navigator.pop(context);
+          //       builder: (context) => Addtasksscreen(addtaskscallback: (newTextTittle) {
+          //            print(newTextTittle);
+          //         //   setState(() {
+          //            //  tasks.add(Task(name: newTextTittle));
+          //            //});
+          //            Navigator.pop(context);
              
-          },),);
+          // },
+          builder: (context) => Addtasksscreen(),);
           },
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -59,7 +49,7 @@ class _TaskscreenState extends State<Taskscreen> {
                         color: Colors.white,
                         fontSize: 50.0,
                         fontWeight: FontWeight.w700)),
-                Text("${tasks.length}Tasks",
+                Text("${Provider.of<TasksData>(context).taskCount}Tasks",
                     style: TextStyle(color: Colors.white, fontSize: 18.0)),
               ],
             ),
@@ -72,7 +62,7 @@ class _TaskscreenState extends State<Taskscreen> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0))),
-                child: TasksList(tasks: tasks)),
+                child: TasksList()),
           )
         ]));
   }
